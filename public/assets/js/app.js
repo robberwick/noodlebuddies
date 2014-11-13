@@ -29,8 +29,6 @@ btnNoodle.addEventListener('click', function() {
         data = {
             noodle_name: noodleName.value
         }
-
-        console.log("sending");
         ws.send(JSON.stringify(data));
     }
 })

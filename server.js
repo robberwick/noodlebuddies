@@ -83,7 +83,7 @@ wss.on('connection', function(ws) {
 
             } else {
                 sendMessage(me, 'buddy_found', {
-                    buddy_name: "No-one yet"
+                    buddy_name: "Waiting..."
                 });
             }
         }
@@ -92,7 +92,7 @@ wss.on('connection', function(ws) {
     ws.on('close', function() {
         if (me.buddy) {
             sendMessage(me.buddy, 'buddy_lost', {
-                    buddy_name: "Your buddy left - hang about for another one"
+                    buddy_name: "Your buddy left - we'll try to hook you up with someone else"
                 });
             me.buddy.buddy = null;
         }
