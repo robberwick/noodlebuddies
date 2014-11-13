@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NoodleBuddies</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/noodlebuddies.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="page-header col-md-12">
+                <h1>NoodleBuddies</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-sm-12">
+                    <h2>You want noodles, right?</h2>
+                    <p class="lead">It's noodle time, and you want to make sure you're in on some of that sweet two-for-one offer action, but you don't have anyone to split your order with? AIIEEE! Noodles are turning into "no-dles", amirite?</p>
+                    <form role="form">
+                </div>
+                <div class="col-sm-12">
+                    <h2>Relax! We can help you with that.</h2>
+                    <p>Our team of highly trained NoodleBuddy Ninjas have been training for this very moment. Enter your name to the right and they'll get straight to work matching you up with your perfect lunchtime partner.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Your Name:</label>
+                        <input type="text" class="form-control" id="noodle-name" placeholder="Anonymous Noodler">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" id="btn-noodles">Find me a buddy</button>
+                    </div>
+
+                    </form>
+                </div>
+                <div class="buddy-status row">
+                    <div class="col-sm-12 text-center">
+                        <h2>Current Buddy Status</h2>
+                        <div id="buddy"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src='/assets/js/app.js'></script>
+</body>
+
+</html>
