@@ -19,6 +19,17 @@ NoodleBuddyViewModel = function(){
     this.panelClass = ko.pureComputed(function(){
         return (_this.buddyStatus() === '') ? 'hidden' : "panel-" + _this.buddyStatus();
     });
+    this.message = ko.pureComputed(function(){
+        var messages;
+
+        messages = {
+            'waiting': "Trying to hook you up now - hold tight",
+            'found': "We found your ideal Noodle Buddy!",
+            'lost': "Oh noes! Your Noodle Buddy has left. We'll try to find you another one."
+        }
+
+        return messages[_this.buddyStatus()] || ""
+    });
 }
 
 

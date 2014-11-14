@@ -41,7 +41,8 @@
 
                     </form>
                 </div>
-                <div class="col-sm-12 text-center" data-bind="visible: showPanel(), css:panelClass()">
+                <div class="col-sm-12 text-center panel" data-bind="visible: showPanel(), css:panelClass()">
+                    <p data-bind="text:message()"></p>
                     <h2 id="buddy" data-bind="text:buddyName"></h2>
                 </div>
             </div>

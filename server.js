@@ -86,7 +86,7 @@ wss.on('connection', function(ws) {
             } else {
                 sendMessage(me, 'buddy_found', {
                     buddy_status: "waiting",
-                    buddy_name: "Waiting..."
+                    buddy_name: ""
                 });
             }
         }
@@ -96,7 +96,7 @@ wss.on('connection', function(ws) {
         if (me.buddy) {
             sendMessage(me.buddy, 'buddy_lost', {
                     buddy_status: 'lost',
-                    buddy_name: "Your buddy left - we'll try to hook you up with someone else"
+                    buddy_name: ""
                 });
             me.buddy.buddy = null;
         }
