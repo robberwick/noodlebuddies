@@ -1,21 +1,36 @@
 var host, ws,
-    btnNoodle;
+    btnNoodle,
+    NoodleBuddyViewModel, noodleBuddyVM;
 
 
 host = location.origin.replace(/^http/, 'ws')
 ws = new WebSocket(host);
 btnNoodle = document.querySelector('#btn-noodles');
 
-ws.onmessage = function(event) {
-    var data, buddyStatusEl,
-        buddyEl;
+NoodleBuddyViewModel = function(){
+    var _this;
 
-    buddyEl = document.querySelector('#buddy');
-    buddyStatusEl = document.querySelector('.buddy-status');
+    _this = this
+    this.buddyStatus = ko.observable('');
+    this.buddyName = ko.observable('');
+    this.showPanel = ko.pureComputed(function(){
+        return _this.buddyStatus() !== '';
+    });
+    this.panelClass = ko.pureComputed(function(){
+        return (_this.buddyStatus() === '') ? 'hidden' : "panel-" + _this.buddyStatus();
+    });
+}
+
+
+noodleBuddyVM = new NoodleBuddyViewModel();
+
+ws.onmessage = function(event) {
+    var data;
 
     data = JSON.parse(event.data);
-    buddyEl.textContent = data['buddy_name'];
-    buddyStatusEl.style.display = 'block';
+
+    noodleBuddyVM.buddyName(data['buddy_name']);
+    noodleBuddyVM.buddyStatus(data['buddy_status']);
 
 };
 
@@ -32,3 +47,5 @@ btnNoodle.addEventListener('click', function() {
         ws.send(JSON.stringify(data));
     }
 })
+
+ko.applyBindings(noodleBuddyVM);

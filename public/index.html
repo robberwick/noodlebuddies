@@ -41,16 +41,13 @@
 
                     </form>
                 </div>
-                <div class="buddy-status row">
-                    <div class="col-sm-12 text-center">
-                        <h2>Current Buddy Status</h2>
-                        <div id="buddy"></div>
-                    </div>
+                <div class="col-sm-12 text-center" data-bind="visible: showPanel(), css:panelClass()">
+                    <h2 id="buddy" data-bind="text:buddyName"></h2>
                 </div>
             </div>
         </div>
     </div>
-
+    <script src='/assets/js/knockout-3.2.0.js'></script>
     <script src='/assets/js/app.js'></script>
 </body>
 
