@@ -14,7 +14,8 @@
     <div class="container">
         <div class="row">
             <div class="page-header col-md-12">
-                <h1>NoodleBuddies</h1>
+                <h1>NoodleBuddies
+                <small>hooking buddies up with noodles since 1896</small></h1>
             </div>
         </div>
         <div class="row">
@@ -41,9 +42,15 @@
 
                     </form>
                 </div>
-                <div class="col-sm-12 text-center panel" data-bind="visible: showPanel(), css:panelClass()">
-                    <p data-bind="text:message()"></p>
-                    <h2 id="buddy" data-bind="text:buddyName"></h2>
+                <div class="col-sm-12 text-center panel" data-bind="visible: showPanel()">
+                    <div class="col-sm-6 panel" data-bind="css:panelClass()">
+
+                    </div>
+                    <div class="col-sm-6">
+                        <h3 data-bind="visible:buddyName().length > 0">Your Buddies name is:</h3>
+                        <h2 id="buddy" data-bind="text:buddyName"></h2>
+                        <p data-bind="text:message()"></p>
+                    </div>
                 </div>
             </div>
         </div>

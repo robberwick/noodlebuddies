@@ -1,4 +1,9 @@
-/*
+body {
+/*    background: darkorange;
+    background: linear-gradient(to bottom, black 30px, cornflowerblue);
+    color: #333333;*/
+    height: 100%;
+}
 .panel {
     min-height: 200px;
     background-repeat: no-repeat;
@@ -11,4 +16,3 @@
 .panel-found {
     background-image: url('/assets/images/noodlebox.svg');
 }
-*/
