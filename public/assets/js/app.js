@@ -43,9 +43,13 @@ ws.onmessage = function(event) {
     noodleBuddyVM.buddyName(data['buddy_name']);
     noodleBuddyVM.buddyStatus(data['buddy_status']);
 
+    if (data['buddy_status'] == "lost"){
+        getBuddy();
+    }
+
 };
 
-btnNoodle.addEventListener('click', function() {
+getBuddy = function(){
     var data,
         noodleName;
 
@@ -57,6 +61,7 @@ btnNoodle.addEventListener('click', function() {
         }
         ws.send(JSON.stringify(data));
     }
-})
+}
+btnNoodle.addEventListener('click', getBuddy.bind(this));
 
 ko.applyBindings(noodleBuddyVM);

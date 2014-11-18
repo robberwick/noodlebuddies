@@ -45,13 +45,21 @@ wss.on('connection', function(ws) {
         recipient.client.send(JSON.stringify(_.extend(msgTypes[msg_type], data)));
     }
 
+    function getAvailableBuddies(){
+        return _.filter(clients, function(item) {
+                return (item.id !== userId && item.up_for_noodles === true && item.buddy === null);
+            });
+    }
+
     ws.on('message', function(data, flags) {
         var _this, payload,
             client, foundBuddy,
             available_buddies;
 
         payload = JSON.parse(data);
-
+        if (me.buddy){
+            return;
+        }
         if (payload.noodle_name) {
 
             // mark me as available
@@ -61,17 +69,14 @@ wss.on('connection', function(ws) {
             });
 
             // do we have anyone available?
-            available_buddies = _.filter(clients, function(item) {
-                return (item.id !== userId && item.up_for_noodles === true && item.buddy === null);
-            });
-
+            available_buddies = getAvailableBuddies();
             if (available_buddies.length > 0) {
                 // i have a buddy!
                 foundBuddy = available_buddies[0];
                 foundBuddy['buddy'] = me;
                 me['buddy'] = foundBuddy;
 
-                    // tell the new found buddy
+                // tell the new found buddy
                 sendMessage(foundBuddy, 'buddy_found', {
                     buddy_status: "found",
                     buddy_name: me.noodle_name
@@ -93,7 +98,11 @@ wss.on('connection', function(ws) {
 
     });
     ws.on('close', function() {
+        var availableBuddies;
+
         if (me.buddy) {
+            availableBuddies = getAvailableBuddies();
+
             sendMessage(me.buddy, 'buddy_lost', {
                     buddy_status: 'lost',
                     buddy_name: ""
