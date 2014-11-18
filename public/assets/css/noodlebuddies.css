@@ -8,11 +8,20 @@ body {
     min-height: 200px;
     background-repeat: no-repeat;
     background-size: contain;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
+.panel-waiting {
+    background-image: url('/assets/images/ninja_panda.svg');
+}
 .panel-lost {
     background-image: url('/assets/images/sad_panda.svg');
 }
 .panel-found {
     background-image: url('/assets/images/noodlebox.svg');
+}
+
+.buddy-status {
+    font-weight: bold;
 }

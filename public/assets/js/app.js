@@ -23,7 +23,7 @@ NoodleBuddyViewModel = function(){
         var messages;
 
         messages = {
-            'waiting': "Trying to hook you up now - hold tight",
+            'waiting': "The ninjas have been dispatched! Hold on, and you'll have your Noodle Buddy soon.",
             'found': "We found your ideal Noodle Buddy! Now go enjoy your delicious noodles, you crazy kids!",
             'lost': "Oh noes! Your Noodle Buddy has left. We'll try to find you another one."
         }
