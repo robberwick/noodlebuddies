@@ -13,6 +13,10 @@ NoodleBuddyViewModel = function(){
     _this = this
     this.buddyStatus = ko.observable('');
     this.buddyName = ko.observable('');
+    this.buddyCount = ko.observable(0);
+    this.countText = ko.pureComputed(function(){
+        return (_this.buddyCount() == 1) ? _this.buddyCount() + " buddy" : _this.buddyCount() + " buddies";
+    });
     this.showPanel = ko.pureComputed(function(){
         return _this.buddyStatus() !== '';
     });
@@ -39,10 +43,19 @@ ws.onmessage = function(event) {
     var data;
 
     data = JSON.parse(event.data);
+    console.log(data);
+    if (data['buddy_name']){
+        noodleBuddyVM.buddyName(data['buddy_name']);
+    }
 
-    noodleBuddyVM.buddyName(data['buddy_name']);
-    noodleBuddyVM.buddyStatus(data['buddy_status']);
+    if (data['buddy_status']){
+        noodleBuddyVM.buddyStatus(data['buddy_status']);
+    }
 
+    if (data['count']){
+        console.log(data['count']);
+        noodleBuddyVM.buddyCount(parseInt(data['count'], 10));
+    }
     if (data['buddy_status'] == "lost"){
         getBuddy();
     }
