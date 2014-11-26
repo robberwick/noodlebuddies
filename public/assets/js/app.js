@@ -1,6 +1,7 @@
 var host, ws,
     btnNoodle,
-    NoodleBuddyViewModel, noodleBuddyVM;
+    NoodleBuddyViewModel, noodleBuddyVM,
+    getBuddyTimeout;
 
 
 host = location.origin.replace(/^http/, 'ws')
@@ -36,15 +37,21 @@ NoodleBuddyViewModel = function(){
     });
 }
 
-
 noodleBuddyVM = new NoodleBuddyViewModel();
 
 ws.onmessage = function(event) {
-    var data;
+    var _this, data;
+
+    _this = this;
 
     data = JSON.parse(event.data);
+    //clear the getBuddyTimeout if it's set
     console.log(data);
+
     if (data['buddy_name']){
+        if (getBuddyTimeout){
+            clearTimeout(getBuddyTimeout);
+        }
         noodleBuddyVM.buddyName(data['buddy_name']);
     }
 
@@ -57,7 +64,11 @@ ws.onmessage = function(event) {
         noodleBuddyVM.buddyCount(parseInt(data['count'], 10));
     }
     if (data['buddy_status'] == "lost"){
-        getBuddy();
+        //clear buddy details
+        noodleBuddyVM.buddyName('');
+        console.log("buddy lost - setting timeout");
+        getBuddyTimeout = setTimeout(getBuddy.bind(this), 5000);
+        console.log("get buddy timeout = ", getBuddyTimeout);
     }
 
 };
@@ -66,6 +77,7 @@ getBuddy = function(){
     var data,
         noodleName;
 
+    console.log('getting buddy');
     noodleName = document.querySelector('#noodle-name');
 
     if (noodleName.value) {

@@ -137,8 +137,7 @@ wss.on('connection', function(ws) {
             } else {
                 sendMessage(me, 'buddy_found', {
                     buddy_status: "waiting",
-                    buddy_name: "",
-                    noodle_date: new Date(next('tuesday')).set
+                    buddy_name: ""
                 });
             }
         }
