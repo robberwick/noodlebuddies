@@ -12,6 +12,7 @@ NoodleBuddyViewModel = function(){
     var _this;
 
     _this = this
+    this.noodleName = ko.observable('');
     this.buddyStatus = ko.observable('');
     this.buddyName = ko.observable('');
     this.buddyCount = ko.observable(0);
@@ -35,6 +36,26 @@ NoodleBuddyViewModel = function(){
 
         return messages[_this.buddyStatus()] || ""
     });
+    this.getBuddy = function(){
+        var data;
+        if (this.noodleName().length) {
+            data = {
+                noodle_name: this.noodleName()
+            }
+            ws.send(JSON.stringify(data));
+        }
+    }
+
+    this.bailOut = function(){
+        var data;
+
+        data = {
+            'action': 'cancel'
+        }
+
+        ws.send(JSON.stringify(data));
+    }
+
 }
 
 noodleBuddyVM = new NoodleBuddyViewModel();
@@ -43,10 +64,7 @@ ws.onmessage = function(event) {
     var _this, data;
 
     _this = this;
-
     data = JSON.parse(event.data);
-    //clear the getBuddyTimeout if it's set
-    console.log(data);
 
     if (data['buddy_name']){
         if (getBuddyTimeout){
@@ -60,33 +78,20 @@ ws.onmessage = function(event) {
     }
 
     if (data['count']){
-        console.log(data['count']);
         noodleBuddyVM.buddyCount(parseInt(data['count'], 10));
     }
     if (data['buddy_status'] == "lost"){
         //clear buddy details
         noodleBuddyVM.buddyName('');
-        console.log("buddy lost - setting timeout");
-        getBuddyTimeout = setTimeout(getBuddy.bind(this), 5000);
-        console.log("get buddy timeout = ", getBuddyTimeout);
+        getBuddyTimeout = setTimeout(noodleBuddyVM.getBuddy.bind(noodleBuddyVM), 5000);
+    }
+
+    if (data['msg_type'] == 'reset'){
+        noodleBuddyVM.buddyName('');
+        noodleBuddyVM.buddyStatus('');
     }
 
 };
 
-getBuddy = function(){
-    var data,
-        noodleName;
-
-    console.log('getting buddy');
-    noodleName = document.querySelector('#noodle-name');
-
-    if (noodleName.value) {
-        data = {
-            noodle_name: noodleName.value
-        }
-        ws.send(JSON.stringify(data));
-    }
-}
-btnNoodle.addEventListener('click', getBuddy.bind(this));
 
 ko.applyBindings(noodleBuddyVM);

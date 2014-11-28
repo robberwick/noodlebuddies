@@ -65,9 +65,11 @@ wss.on('connection', function(ws) {
             },
             buddy_count: {
                 msg_type: 'buddy_count'
+            },
+            reset : {
+                msg_type: 'reset'
             }
         }
-
         recipient.client.send(JSON.stringify(_.extend(msgTypes[msg_type], data)));
     }
 
@@ -87,13 +89,22 @@ wss.on('connection', function(ws) {
         var totalBuddies;
 
         totalBuddies = getConnectedBuddies();
-        console.log("total buddies:", totalBuddies);
         _.map(clients, function(connectedBuddy){
             sendMessage(connectedBuddy, 'buddy_count', {
                 count: totalBuddies.length
             })
         })
     }
+
+    function dropBuddy() {
+        if (me.buddy) {
+            sendMessage(me.buddy, 'buddy_lost', {
+                    buddy_status: 'lost',
+                    buddy_name: ""
+                });
+            me.buddy.buddy = null;
+        }
+    };
 
     updateBuddyCounts();
 
@@ -103,9 +114,22 @@ wss.on('connection', function(ws) {
             available_buddies;
 
         payload = JSON.parse(data);
+        if (payload.action && payload.action=="cancel"){
+            dropBuddy();
+
+            // reset me
+            me.buddy = null;
+            me.up_for_noodles = false;
+            sendMessage(me, 'reset', {
+                buddy_status: '',
+                buddy_name: ''
+            })
+        }
+
         if (me.buddy){
             return;
         }
+
         if (payload.noodle_name) {
 
             // mark me as available
@@ -142,25 +166,15 @@ wss.on('connection', function(ws) {
             }
         }
 
+
     updateBuddyCounts();
 
     });
-    ws.on('close', function() {
-        var availableBuddies;
-
-        if (me.buddy) {
-            availableBuddies = getAvailableBuddies();
-
-            sendMessage(me.buddy, 'buddy_lost', {
-                    buddy_status: 'lost',
-                    buddy_name: ""
-                });
-            me.buddy.buddy = null;
-        }
+    ws.on('close', function(){
+        dropBuddy();
         _.remove(clients, {
             'id': userId
         });
-
         updateBuddyCounts();
     });
 });

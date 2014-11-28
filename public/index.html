@@ -23,7 +23,7 @@
                 <div class="col-sm-12">
                     <h2>You want noodles, right?</h2>
                     <p class="lead">It's noodle time, and you want to make sure you're in on some of that sweet two-for-one offer action, but you don't have anyone to split your order with? AIIEEE! Noodles are turning into "no-dles", amirite?</p>
-                    <form role="form">
+
                 </div>
                 <div class="col-sm-12">
                     <h2>Relax! We can help you with that.</h2>
@@ -32,18 +32,12 @@
             </div>
             <div class="col-md-6">
                 <div class="col-sm-12">
-                    <h1>Currently serving <span data-bind="text: countText()"></span></h1>
+                    <h2>Currently serving <span data-bind="text: countText()"></span></h2>
                 </div>
                 <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Your Name:</label>
-                        <input type="text" class="form-control" id="noodle-name" placeholder="Anonymous Noodler">
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-primary" id="btn-noodles">Find me a buddy</button>
-                    </div>
-
-                    </form>
+                <!-- ko ifnot:showPanel() -->
+                    <div data-bind="{template: 'tpl-signup'}"></div>
+                <!-- /ko -->
                 </div>
                 <div class="col-sm-12 text-center panel" data-bind="visible: showPanel()">
                     <div class="col-sm-4 panel" data-bind="css:panelClass()">
@@ -54,10 +48,33 @@
                         <h2 id="buddy" data-bind="text:buddyName"></h2>
                         <p class="buddy-status" data-bind="text:message()"></p>
                     </div>
+                <!-- ko if:showPanel() -->
+                    <div data-bind="{template: 'tpl-signout'}"></div>
+                <!-- /ko -->
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/html" id="tpl-signup">
+        <form role="form">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Your Name:</label>
+                <input
+                    data-bind="value:noodleName"
+                    type="text"
+                    class="form-control"
+                    id="noodle-name"
+                    placeholder="Anonymous Noodler">
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" id="btn-noodles" data-bind="click:getBuddy">Find me a buddy</button>
+            </div>
+
+        </form>
+    </script>
+    <script type="text/html" id="tpl-signout">
+        <button type="button" class="btn btn-danger" data-bind="click:bailOut">I changed my mind - no noodles for me!</button>
+    </script>
     <script src='/assets/js/knockout-3.2.0.js'></script>
     <script src='/assets/js/app.js'></script>
 </body>
