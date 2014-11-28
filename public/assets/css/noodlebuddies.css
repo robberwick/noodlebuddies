@@ -1,8 +1,19 @@
+/*
+palette:
+#95AA61 - babmboo cocktail
+#121310 - panda black
+#F6F8EE - tooth work
+#D6E68A - fresh bamboo
+#899752 - leaf dressing
+*/
 body {
 /*    background: darkorange;
     background: linear-gradient(to bottom, black 30px, cornflowerblue);
     color: #333333;*/
     height: 100%;
+    color: #F6F8EE;
+    text-shadow: #121310 1px 1px 3px;
+    background-color: #95AA61;
 }
 .panel {
     min-height: 200px;
@@ -12,6 +23,20 @@ body {
     box-shadow: none;
 }
 
+.panel--message {
+    background-color: #F6F8EE;
+    min-height: inherit;
+    padding: 15px;
+    color: #121310;
+    text-shadow: #B3A24D 1px 1px 3px;
+}
+.panel-waiting,
+.panel-lost,
+.panel-found {
+    margin-bottom: 0;
+    background-color: transparent;
+    min-height: 150px;
+}
 .panel-waiting {
     background-image: url('/assets/images/ninja_panda.svg');
 }
@@ -28,7 +53,15 @@ body {
 
 .buddies-served {
     text-align: center;
+    background-color: #889752;
+    border-color: transparent;
+    /*color: #899752;*/
+
 }
 .buddies-served__legend {
     margin-top: 10px;
+}
+
+.label-info {
+    background-color: #D6E68A;
 }
