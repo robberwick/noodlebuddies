@@ -44,9 +44,8 @@
 
                     </div>
                     <div class="col-sm-8">
-                        <h3 data-bind="visible:buddyName().length > 0">Your Buddies name is:</h3>
-                        <h2 id="buddy" data-bind="text:buddyName"></h2>
-                        <p class="buddy-status" data-bind="text:message()"></p>
+                        <div data-bind="template: message()">
+                        </div>
                     </div>
                 <!-- ko if:showPanel() -->
                     <div data-bind="{template: 'tpl-signout'}"></div>
@@ -75,6 +74,20 @@
     <script type="text/html" id="tpl-signout">
         <button type="button" class="btn btn-danger" data-bind="click:bailOut">I changed my mind - no noodles for me!</button>
     </script>
+    <script type="text/html" id="tpl-lost">
+    <h4>Oh noes! Your Noodle Buddy left &hellip;</h4>
+    <p>Don't worry - We'll try to find you another one.</p>
+    </script>
+    <script type="text/html" id="tpl-waiting">
+    <h4>The ninjas have been dispatched!</h4>
+    <p>Hold on, and you'll have your Noodle Buddy soon.</p>
+    </script>
+    <script type="text/html" id="tpl-found">
+    <h4>We found your ideal Noodle Buddy!</h4>
+    <h2 id="buddy" data-bind="text:buddyName"></h2>
+    <p>Now go enjoy your delicious noodles, you crazy kids!</p>
+    </script>
+    <script type="text/html" id="tpl-none"></script>
     <script src='/assets/js/knockout-3.2.0.js'></script>
     <script src='/assets/js/app.js'></script>
 </body>

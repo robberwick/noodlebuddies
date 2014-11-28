@@ -33,8 +33,12 @@ NoodleBuddyViewModel = function(){
             'found': "We found your ideal Noodle Buddy! Now go enjoy your delicious noodles, you crazy kids!",
             'lost': "Oh noes! Your Noodle Buddy has left. We'll try to find you another one."
         }
-
-        return messages[_this.buddyStatus()] || ""
+        if (_this.buddyStatus() == '') {
+            return "tpl-none"
+        } else {
+            return "tpl-" + _this.buddyStatus();
+        };
+        // return messages[_this.buddyStatus()] || ""
     });
     this.getBuddy = function(){
         var data;
