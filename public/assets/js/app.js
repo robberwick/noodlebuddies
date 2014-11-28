@@ -17,7 +17,7 @@ NoodleBuddyViewModel = function(){
     this.buddyName = ko.observable('');
     this.buddyCount = ko.observable(0);
     this.countText = ko.pureComputed(function(){
-        return (_this.buddyCount() == 1) ? _this.buddyCount() + " buddy" : _this.buddyCount() + " buddies";
+        return (_this.buddyCount() == 1) ? "buddy" : "buddies";
     });
     this.showPanel = ko.pureComputed(function(){
         return _this.buddyStatus() !== '';
@@ -26,19 +26,11 @@ NoodleBuddyViewModel = function(){
         return (_this.buddyStatus() === '') ? 'hidden' : "panel-" + _this.buddyStatus();
     });
     this.message = ko.pureComputed(function(){
-        var messages;
-
-        messages = {
-            'waiting': "The ninjas have been dispatched! Hold on, and you'll have your Noodle Buddy soon.",
-            'found': "We found your ideal Noodle Buddy! Now go enjoy your delicious noodles, you crazy kids!",
-            'lost': "Oh noes! Your Noodle Buddy has left. We'll try to find you another one."
-        }
         if (_this.buddyStatus() == '') {
             return "tpl-none"
         } else {
             return "tpl-" + _this.buddyStatus();
         };
-        // return messages[_this.buddyStatus()] || ""
     });
     this.getBuddy = function(){
         var data;

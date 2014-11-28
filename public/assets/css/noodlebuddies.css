@@ -25,3 +25,10 @@ body {
 .buddy-status {
     font-weight: bold;
 }
+
+.buddies-served {
+    text-align: center;
+}
+.buddies-served__legend {
+    margin-top: 10px;
+}

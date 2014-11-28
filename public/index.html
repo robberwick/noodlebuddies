@@ -14,8 +14,7 @@
     <div class="container">
         <div class="row">
             <div class="page-header col-md-12">
-                <h1>NoodleBuddies
-                <small>hooking buddies up with noodles since 1896</small></h1>
+                <h1>NoodleBuddies</h1>
             </div>
         </div>
         <div class="row">
@@ -31,8 +30,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="col-sm-12">
-                    <h2>Currently serving <span data-bind="text: countText()"></span></h2>
+                <div class="col-sm-12 well well-sm buddies-served">
+                    <h2 class="buddies-served__legend" >Currently serving <span class="label label-info" data-bind="text: buddyCount()"></span> <span data-bind="text:countText()"></span></h2>
                 </div>
                 <div class="col-sm-12">
                 <!-- ko ifnot:showPanel() -->
@@ -80,12 +79,12 @@
     </script>
     <script type="text/html" id="tpl-waiting">
     <h4>The ninjas have been dispatched!</h4>
-    <p>Hold on, and you'll have your Noodle Buddy soon.</p>
+    <p>Hold on, and you'll have your <br>Noodle Buddy soon.</p>
     </script>
     <script type="text/html" id="tpl-found">
     <h4>We found your ideal Noodle Buddy!</h4>
     <h2 id="buddy" data-bind="text:buddyName"></h2>
-    <p>Now go enjoy your delicious noodles, you crazy kids!</p>
+    <p>Now go enjoy your delicious noodles, <br>you crazy kids!</p>
     </script>
     <script type="text/html" id="tpl-none"></script>
     <script src='/assets/js/knockout-3.2.0.js'></script>
