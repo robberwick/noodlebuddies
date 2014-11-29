@@ -35,6 +35,7 @@ body {
 .panel-found {
     margin-bottom: 0;
     background-color: transparent;
+    background-position: center;
     min-height: 150px;
 }
 .panel-waiting {
