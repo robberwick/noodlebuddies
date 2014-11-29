@@ -3,7 +3,6 @@ var host, ws,
     NoodleBuddyViewModel, noodleBuddyVM,
     getBuddyTimeout;
 
-
 host = location.origin.replace(/^http/, 'ws')
 ws = new WebSocket(host);
 btnNoodle = document.querySelector('#btn-noodles');
@@ -32,10 +31,14 @@ NoodleBuddyViewModel = function(){
             return "tpl-" + _this.buddyStatus();
         };
     });
+
+    this.buddyCheckTimeout = null;
+
     this.getBuddy = function(){
         var data;
         if (this.noodleName().length) {
             data = {
+                msg_type: 'get_buddy',
                 noodle_name: this.noodleName()
             }
             ws.send(JSON.stringify(data));
@@ -46,47 +49,57 @@ NoodleBuddyViewModel = function(){
         var data;
 
         data = {
-            'action': 'cancel'
+            'msg_type': 'cancel'
         }
 
         ws.send(JSON.stringify(data));
     }
 
+    this.setBuddyCheckTimeout = function(){
+        this.buddyCheckTimeout = setTimeout(this.getBuddy.bind(this), 5000);
+    }
+
+    this.setBuddyName = function(buddyName){
+        if (this.buddyCheckTimeout){
+            clearTimeout(this.buddyCheckTimeout);
+        }
+        this.buddyName(buddyName);
+    }
 }
 
 noodleBuddyVM = new NoodleBuddyViewModel();
 
 ws.onmessage = function(event) {
-    var _this, data;
+    var _this, data,
+        messageHandlers, handlerFunc;
 
     _this = this;
+    messageHandlers = {
+        waiting: function(data){
+            noodleBuddyVM.buddyStatus('waiting');
+        },
+        found_buddy: function(data){
+            noodleBuddyVM.setBuddyName(data['buddy_name'])
+            noodleBuddyVM.buddyStatus('found');
+        },
+        lost_buddy: function(data){
+            noodleBuddyVM.setBuddyName('');
+            noodleBuddyVM.buddyStatus('lost');
+            noodleBuddyVM.setBuddyCheckTimeout();
+        },
+        buddy_count: function(data){
+            noodleBuddyVM.buddyCount(parseInt(data['count'], 10));
+        },
+        reset : function(){
+            noodleBuddyVM.buddyName('');
+            noodleBuddyVM.buddyStatus('');
+        }
+    }
+
     data = JSON.parse(event.data);
 
-    if (data['buddy_name']){
-        if (getBuddyTimeout){
-            clearTimeout(getBuddyTimeout);
-        }
-        noodleBuddyVM.buddyName(data['buddy_name']);
-    }
-
-    if (data['buddy_status']){
-        noodleBuddyVM.buddyStatus(data['buddy_status']);
-    }
-
-    if (data['count']){
-        noodleBuddyVM.buddyCount(parseInt(data['count'], 10));
-    }
-    if (data['buddy_status'] == "lost"){
-        //clear buddy details
-        noodleBuddyVM.buddyName('');
-        getBuddyTimeout = setTimeout(noodleBuddyVM.getBuddy.bind(noodleBuddyVM), 5000);
-    }
-
-    if (data['msg_type'] == 'reset'){
-        noodleBuddyVM.buddyName('');
-        noodleBuddyVM.buddyStatus('');
-    }
-
+    handlerFunc = messageHandlers[data.msg_type] || function(){console.log('unsupported msg_type')};
+    handlerFunc(data);
 };
 
 

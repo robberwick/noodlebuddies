@@ -66,6 +66,9 @@ wss.on('connection', function(ws) {
             buddy_count: {
                 msg_type: 'buddy_count'
             },
+            waiting: {
+                msg_type: 'waiting'
+            },
             reset : {
                 msg_type: 'reset'
             }
@@ -114,58 +117,59 @@ wss.on('connection', function(ws) {
             available_buddies;
 
         payload = JSON.parse(data);
-        if (payload.action && payload.action=="cancel"){
-            dropBuddy();
 
-            // reset me
-            me.buddy = null;
-            me.up_for_noodles = false;
-            sendMessage(me, 'reset', {
-                buddy_status: '',
-                buddy_name: ''
-            })
-        }
+        switch (payload.msg_type){
+            case "cancel":
+                dropBuddy();
 
-        if (me.buddy){
-            return;
-        }
+                // reset me
+                me.buddy = null;
+                me.up_for_noodles = false;
+                sendMessage(me, 'reset', {
+                    buddy_status: '',
+                    buddy_name: ''
+                })
+                break;
 
-        if (payload.noodle_name) {
-
-            // mark me as available
-            me = _.extend(me, {
-                up_for_noodles: true,
-                noodle_name: payload.noodle_name
-            });
-
-            // do we have anyone available?
-            available_buddies = getAvailableBuddies();
-            if (available_buddies.length > 0) {
-                // i have a buddy!
-                foundBuddy = available_buddies[0];
-                foundBuddy['buddy'] = me;
-                me['buddy'] = foundBuddy;
-
-                // tell the new found buddy
-                sendMessage(foundBuddy, 'buddy_found', {
-                    buddy_status: "found",
-                    buddy_name: me.noodle_name
+            case 'get_buddy':
+                if (me.buddy){
+                    return;
+                }
+                // mark me as available
+                me = _.extend(me, {
+                    up_for_noodles: true,
+                    noodle_name: payload.noodle_name
                 });
 
-                //tell me
-                sendMessage(me, 'buddy_found', {
-                    buddy_status: "found",
-                    buddy_name: foundBuddy.noodle_name
-                });
+                // do we have anyone available?
+                available_buddies = getAvailableBuddies();
+                if (available_buddies.length > 0) {
+                    // i have a buddy!
+                    foundBuddy = available_buddies[0];
+                    foundBuddy['buddy'] = me;
+                    me['buddy'] = foundBuddy;
 
-            } else {
-                sendMessage(me, 'buddy_found', {
-                    buddy_status: "waiting",
-                    buddy_name: ""
-                });
-            }
+                    // tell the new found buddy
+                    sendMessage(foundBuddy, 'buddy_found', {
+                        buddy_status: "found",
+                        buddy_name: me.noodle_name
+                    });
+
+                    //tell me
+                    sendMessage(me, 'buddy_found', {
+                        buddy_status: "found",
+                        buddy_name: foundBuddy.noodle_name
+                    });
+
+                } else {
+                    sendMessage(me, 'waiting', {
+                        buddy_status: "",
+                        buddy_name: ""
+                    });
+                }
+                break;
+
         }
-
 
     updateBuddyCounts();
 
