@@ -1,11 +1,8 @@
 var host, ws,
-    btnNoodle,
-    NoodleBuddyViewModel, noodleBuddyVM,
-    getBuddyTimeout;
+    NoodleBuddyViewModel, noodleBuddyVM;
 
 host = location.origin.replace(/^http/, 'ws')
 ws = new WebSocket(host);
-btnNoodle = document.querySelector('#btn-noodles');
 
 NoodleBuddyViewModel = function(){
     var _this;
@@ -33,43 +30,43 @@ NoodleBuddyViewModel = function(){
     });
 
     this.buddyCheckTimeout = null;
+}
 
-    this.getBuddy = function(){
-        var data;
-        if (this.noodleName().length) {
-            data = {
-                msg_type: 'get_buddy',
-                noodle_name: this.noodleName()
-            }
-            ws.send(JSON.stringify(data));
-        }
-    }
-
-    this.bailOut = function(){
-        var data;
-
+NoodleBuddyViewModel.prototype.getBuddy = function(){
+    var data;
+    if (this.noodleName().length) {
         data = {
-            'msg_type': 'cancel'
+            msg_type: 'get_buddy',
+            noodle_name: this.noodleName()
         }
-
-        this.clearBuddyCheckTimeout();
         ws.send(JSON.stringify(data));
     }
+}
 
-    this.setBuddyCheckTimeout = function(){
-        this.buddyCheckTimeout = setTimeout(this.getBuddy.bind(this), 5000);
+NoodleBuddyViewModel.prototype.bailOut = function(){
+    var data;
+
+    data = {
+        'msg_type': 'cancel'
     }
 
-    this.clearBuddyCheckTimeout = function(){
-        if (this.buddyCheckTimeout){
-            clearTimeout(this.buddyCheckTimeout);
-        }
-    }
+    this.clearBuddyCheckTimeout();
+    ws.send(JSON.stringify(data));
+}
 
-    this.setBuddyName = function(buddyName){
-        this.clearBuddyCheckTimeout();
-        this.buddyName(buddyName);
+NoodleBuddyViewModel.prototype.setBuddyCheckTimeout = function(){
+    this.buddyCheckTimeout = setTimeout(this.getBuddy.bind(this), 5000);
+}
+
+NoodleBuddyViewModel.prototype.clearBuddyCheckTimeout = function(){
+    if (this.buddyCheckTimeout){
+        clearTimeout(this.buddyCheckTimeout);
     }
+}
+
+NoodleBuddyViewModel.prototype.setBuddyName = function(buddyName){
+    this.clearBuddyCheckTimeout();
+    this.buddyName(buddyName);
 }
 
 noodleBuddyVM = new NoodleBuddyViewModel();
