@@ -54,9 +54,9 @@
         </div>
     </div>
     <script type="text/html" id="tpl-signup">
-        <form role="form">
+        <form role="form" data-bind="submit:getBuddy">
             <div class="form-group">
-                <label for="exampleInputEmail1">Your Name:</label>
+                <label for="noodle-name">Your Name:</label>
                 <input
                     data-bind="value:noodleName"
                     type="text"
@@ -65,7 +65,7 @@
                     placeholder="Anonymous Noodler">
             </div>
             <div class="form-group">
-                <button type="button" class="btn btn-primary" id="btn-noodles" data-bind="click:getBuddy">Find me a buddy</button>
+                <button type="submit" class="btn btn-primary" id="btn-noodles">Find me a buddy</button>
             </div>
 
         </form>
