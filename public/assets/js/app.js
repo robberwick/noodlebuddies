@@ -52,6 +52,7 @@ NoodleBuddyViewModel = function(){
             'msg_type': 'cancel'
         }
 
+        this.clearBuddyCheckTimeout();
         ws.send(JSON.stringify(data));
     }
 
@@ -59,10 +60,14 @@ NoodleBuddyViewModel = function(){
         this.buddyCheckTimeout = setTimeout(this.getBuddy.bind(this), 5000);
     }
 
-    this.setBuddyName = function(buddyName){
+    this.clearBuddyCheckTimeout = function(){
         if (this.buddyCheckTimeout){
             clearTimeout(this.buddyCheckTimeout);
         }
+    }
+
+    this.setBuddyName = function(buddyName){
+        this.clearBuddyCheckTimeout();
         this.buddyName(buddyName);
     }
 }
